@@ -8,6 +8,23 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    public function login(Request $request){
+        $incomingFields = $request->validate([
+            'loginEmail' => ['required'],
+            'loginPassword' => ['required']
+        ]);
+        if(auth() -> attempt(['email' => $incomingFields['loginEmail'], 'password' => $incomingFields['loginPassword']])){
+            $request -> session() -> regenerate();
+        }
+        return redirect('/');
+    }
+
+    public function logout()  {
+        auth() -> logout();
+        return redirect('/');
+    }
+
     public function regiser (Request $request) {
         $incomingFields = $request -> validate([
             'name' => ['required', 'min:3', 'max: 15'],
