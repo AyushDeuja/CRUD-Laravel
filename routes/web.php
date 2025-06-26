@@ -30,3 +30,5 @@ Route::post('/login', [UserController::class,'login']);
 
 //blog post related routes
 Route::post('/create-post',[PostController::class,'createPost'] );
+Route::get('/edit-post/{post}', [PostController::class,'showEditScreen']);
+Route::put('/edit-post/{post}', [PostController::class,'actuallyUpdatePost']);
