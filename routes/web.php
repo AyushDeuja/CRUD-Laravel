@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use Illuminate\Auth\Events\Logout;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get( '/', function () {
-    return view('home');
+    $posts = [];
+    if(auth()->check()){
+        $posts =  auth()->user()->userCoolPosts()->latest()->get();
+    }
+    return view('home' ,['posts' => $posts]);
 });
 
 Route::post('/register', [UserController::class, 'regiser']);
 Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/login', [UserController::class,'login']);
+
+//blog post related routes
+Route::post('/create-post',[PostController::class,'createPost'] );
